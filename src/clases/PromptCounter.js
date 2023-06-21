@@ -16,9 +16,7 @@ export default class PromptCounter {
             "model: web browsing",
             "model: gpt-4",
             "model: plugins",
-            "gpt-4",
-            "gpt",
-            "davinci", // este es para gpt-3
+            "gpt-4"
         ]
         this.configHandler = null
         this.fechaUltimoPrompt = null
