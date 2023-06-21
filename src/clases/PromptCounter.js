@@ -16,6 +16,7 @@ export default class PromptCounter {
         this.modelosGpt4 = [
             "Model: Web Browsing",
             "Model: GPT-4",
+            "Model: Plugins",
             "GPT"
         ]
         this.configHandler = null
@@ -23,12 +24,6 @@ export default class PromptCounter {
         this.promptCount = 0
         this.maxPromptCount = 25
         //PromptCounter.resetPlugin()
-    }
-
-    static async resetPlugin(){
-        const configHandler = await ConfigHandler.create();
-        await configHandler.setSettings({ 'promptCount': 0, 'fechaUltimoPrompt': new Date().toString() });
-        browser.runtime.sendMessage({action: 'updateBadge', data: {count: 0}});
     }
 
     async init () {
@@ -115,5 +110,23 @@ export default class PromptCounter {
         const color = this.promptCount < 10 ? 'green' : this.promptCount < 20 ? 'yellow' : 'red';
         console.log("🚀 ~ updateBadge ~ color:", color, this.promptCount, this.fechaUltimoPrompt)
         browser.runtime.sendMessage({action: 'updateBadge', data: {count: this.promptCount}});
+    }
+
+    async destroy(){
+        console.log('promptcounter destroyed')
+        return new Promise((resolve) => {
+            this.configHandler = null
+            this.fechaUltimoPrompt = null
+            this.promptCount = 0
+            setTimeout(() => {
+                resolve()
+            }, 300)
+        });
+    }
+    static async resetPlugin(){
+        // esta funcion solo es para reiniciar los valores del plugin, quizas buscas la funcion destroy
+        const configHandler = await ConfigHandler.create();
+        await configHandler.setSettings({ 'promptCount': 0, 'fechaUltimoPrompt': new Date().toString() });
+        browser.runtime.sendMessage({action: 'updateBadge', data: {count: 0}});
     }
 }

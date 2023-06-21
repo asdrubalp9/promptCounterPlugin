@@ -1,11 +1,13 @@
-console.log('aaaa')
 import FormGenerator from './clases/formGenerator.js';
 import { config } from './config.js';
 import ConfigHandler from './clases/ConfigHandler.js'
 
 const configHandler = ConfigHandler
 
-document.getElementById('version').textContent = configHandler.displayVersion();
+const versionSection = document.getElementById('version')
+if(versionSection){
+    versionSection.textContent = configHandler.displayVersion();
+}
 
 const formGenerator = new FormGenerator('optionScreen', config);
 formGenerator.generateForm().then(() => {

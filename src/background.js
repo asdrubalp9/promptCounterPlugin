@@ -2,7 +2,6 @@
 const extension = typeof browser !== 'undefined' ? browser : chrome;
 
 extension.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('BACKGROUND ACTIVATED!!!request', request)
     if (request.action === 'updateBadge') {
         let count = request.data.count;
 
