@@ -1,9 +1,34 @@
-import { geti18nMessage } from "./helpers";
+// import { geti18nMessage } from "./helpers";
 
 const config = [
   {
     type: 'separator',
-    label: geti18nMessage('configTextToSpeech'),
+    label: 'Configuration',
+  },
+  {
+    name: 'sound',
+    label: 'Sound configuration',
+    placeholder: 'Sound configuration',
+    htmlId: 'sound',
+    htmlclass: '',
+    value: '',
+    defaultValue: 'always',
+    type: 'radio',
+    Hint: '',
+    options: [
+      {
+        label: 'Always sound when chatGPT finishes',
+        value: 'always', 
+      },
+      {
+        label: 'Only sound when chatGPT is not focused',
+        value: 'notFocused',
+      },
+      {
+        label: 'Never make a sound',
+        value: 'never',
+      },
+    ],
   },
   {
     name: 'promptCount',
