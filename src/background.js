@@ -29,3 +29,21 @@ extension.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
     }
 });
+
+
+extension.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.message === 'getTabUrl') {
+    // Obtén la URL de la pestaña actual
+    extension.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs[0]) {
+        sendResponse({ tabUrl: tabs[0].url });
+      } else {
+        // Maneja el caso en que no hay pestañas activas
+        sendResponse({ tabUrl: '' });
+      }
+    });
+
+    // Esto es necesario para hacer que sendResponse sea asincrónico
+    return true;
+  }
+});

@@ -12,3 +12,8 @@ dingus.init();
 counter.init()
   .then(() => console.log('PromptCounter initialized.'))
   .catch(err => console.error('Failed to initialize PromptCounter:', err));
+
+delegateEventListener('li a', 'click', async function(event) {
+  await dingus.destroy();
+  dingus.init();
+});
