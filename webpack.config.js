@@ -11,8 +11,8 @@ module.exports = (env, argv) => {
   return {
     entry: {
       content: path.join(__dirname, 'src', 'content.js'),
-      //background: path.join(__dirname, 'src', 'background.js'),
-      //popup: path.join(__dirname, 'src', 'popup.js'),
+      background: path.join(__dirname, 'src', 'background.js'),
+      popup: path.join(__dirname, 'src', 'popup.js'),
     },
     output: {
       path: path.join(__dirname, 'dist'),
@@ -61,9 +61,10 @@ module.exports = (env, argv) => {
           { from: path.join(__dirname, 'src', 'options.html'), to: path.join(__dirname, 'dist', 'options.html') },
           { from: path.join(__dirname, 'src', 'options.js'), to: path.join(__dirname, 'dist', 'options.js') },
           { from: path.join(__dirname, 'src', 'popup.html'), to: path.join(__dirname, 'dist', 'popup.html') },
-          { from: path.join(__dirname, 'src', 'popup.js'), to: path.join(__dirname, 'dist', 'popup.js') },
-          { from: path.join(__dirname, 'src', 'background.js'), to: path.join(__dirname, 'dist', 'background.js') },
+          // { from: path.join(__dirname, 'src', 'popup.js'), to: path.join(__dirname, 'dist', 'popup.js') },
+          // { from: path.join(__dirname, 'src', 'background.js'), to: path.join(__dirname, 'dist', 'background.js') },
           { from: path.join(__dirname, 'src', 'browser-polyfill.min.js'), to: path.join(__dirname, 'dist', 'browser-polyfill.min.js') },
+          { from: path.join(__dirname, 'src', 'sounds'), to: path.join(__dirname, 'dist', 'sounds') },
           // { from: path.join(__dirname, 'src', '_locales'), to: path.join(__dirname, 'dist', '_locales') },
         ],
       }),

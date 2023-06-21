@@ -4,7 +4,9 @@
   "version": "1",
   "description": "Count the times you've used a prompt in GPT4",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs",
+    "audio"
   ],
   "options_ui": {
     "page": "options.html",
@@ -23,6 +25,10 @@
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
+  "web_accessible_resources": [{
+    "resources": ["sounds/ding.mp3"],
+    "matches": ["*://*.openai.com/*"]
+  }],
   "background": {
     "service_worker": "background.js",
     "type": "module"

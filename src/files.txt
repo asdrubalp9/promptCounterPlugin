@@ -1,0 +1,40 @@
+Folder PATH listing
+Volume serial number is 4662-13EE
+C:.
+|   background.js
+|   browser-polyfill.min.js
+|   config.js
+|   content.js
+|   files.text
+|   helpers.js
+|   manifest.json
+|   options.html
+|   options.js
+|   popup.html
+|   popup.js
+|   
++---clases
+|       ConfigHandler.js
+|       DrusPlugins.js
+|       ElementMonitor.js
+|       formGenerator.js
+|       PromptCounter.js
+|       SoundActivator.js
+|       
++---images
+|       downloadBtn.png
+|       druportrait.png
+|       icon128.png
+|       icon16.png
+|       icon48.png
+|       listening.png
+|       micBtn.png
+|       modal.png
+|       notListening.png
+|       pasteBtn.png
+|       person1.jpg
+|       stfubtn.png
+|       
+\---sounds
+        ding.mp3
+        

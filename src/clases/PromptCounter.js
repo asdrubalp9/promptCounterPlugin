@@ -10,18 +10,26 @@ export default class PromptCounter {
     TODO: revisar si se resetea el counting despues de 3 horas
     revisar como tomar el primer prompt nuevo y ver si es gpt3 o gpt4 
     que haga el ding cuando termine de responder
+    verificar que el tiempo se tome bien
     /*/
-  constructor() {
-    this.modelosGpt4 = [
-        "Model: Web Browsing",
-        "Model: GPT-4",
-        "GPT"
-    ]
-    this.configHandler = null
-    this.fechaUltimoPrompt = null
-    this.promptCount = 0
-    this.maxPromptCount = 25
-  }
+    constructor() {
+        this.modelosGpt4 = [
+            "Model: Web Browsing",
+            "Model: GPT-4",
+            "GPT"
+        ]
+        this.configHandler = null
+        this.fechaUltimoPrompt = null
+        this.promptCount = 0
+        this.maxPromptCount = 25
+        //PromptCounter.resetPlugin()
+    }
+
+    static async resetPlugin(){
+        const configHandler = await ConfigHandler.create();
+        await configHandler.setSettings({ 'promptCount': 0, 'fechaUltimoPrompt': new Date().toString() });
+        browser.runtime.sendMessage({action: 'updateBadge', data: {count: 0}});
+    }
 
     async init () {
         this.configHandler = await ConfigHandler.create();
@@ -35,6 +43,7 @@ export default class PromptCounter {
         }
         return false
     }
+    
     setPromptCounterListeners() {
         console.log('setPromptCounterListeners')
         document.addEventListener('keydown', async (e) => {
@@ -43,14 +52,16 @@ export default class PromptCounter {
             //buscar si tiene boton, si tiene boton ver cual esta seleccionado
             // si no tiene boton usar el actual
             if ((tagName === 'input' || tagName === 'textarea') && e.key === 'Enter' && !e.shiftKey) {
-                console.log("🚀 ~ setPromptCounterListeners ~ block", block, block.outerHTML.includes('GPT-4'), this.validateIfGPTVersionIsCountable(block.outerHTML))
-                if(block.outerHTML.includes('button')){
-
-                }else{
-                    if (this.validateIfGPTVersionIsCountable(block.outerHTML)) {
-                    //if (block.outerHTML.includes('GPT-4') && block.outerHTML.includes('Model')) {
-                        await this.addPromptCount();
-                        this.updateBadge();
+                if(block){
+                    console.log("🚀 ~ setPromptCounterListeners ~ block", block, block.outerHTML.includes('GPT-4'), this.validateIfGPTVersionIsCountable(block.outerHTML))
+                    if(block.outerHTML.includes('button')){
+    
+                    }else{
+                        if (this.validateIfGPTVersionIsCountable(block.outerHTML)) {
+                        //if (block.outerHTML.includes('GPT-4') && block.outerHTML.includes('Model')) {
+                            await this.addPromptCount();
+                            this.updateBadge();
+                        }
                     }
                 }
             }
@@ -74,6 +85,7 @@ export default class PromptCounter {
     checkIfResetIsNeeded (){
         let now = new Date();
         let hoursSinceLastPrompt = (now - new Date(this.fechaUltimoPrompt)) / 1000 / 60 / 60;
+        console.log("🚀 ~ hoursSinceLastPrompt:", hoursSinceLastPrompt)
         if (hoursSinceLastPrompt > 3)  return true
         return false
     }
@@ -83,9 +95,7 @@ export default class PromptCounter {
             await this.resetPromptCount();
         }
         if(this.promptCount < this.maxPromptCount){
-            let now = new Date();
             this.promptCount++;
-            this.fechaUltimoPrompt = now;
             await this.setCountingSettings();
             this.updateBadge();
         }
@@ -104,19 +114,6 @@ export default class PromptCounter {
     updateBadge() {
         const color = this.promptCount < 10 ? 'green' : this.promptCount < 20 ? 'yellow' : 'red';
         console.log("🚀 ~ updateBadge ~ color:", color, this.promptCount, this.fechaUltimoPrompt)
-        //chrome.action.setBadgeText({ text: count.toString() });
-        //chrome.action.setBadgeBackgroundColor({ color: color });
-        // browser.action.setBadgeBackgroundColor({ color: 'red' });
-        // browser.action.setBadgeText({ text: this.promptCount });
         browser.runtime.sendMessage({action: 'updateBadge', data: {count: this.promptCount}});
-        
-        // browser.runtime.sendMessage({
-        //     action: 'updateBadge',
-        //     data: {
-        //         count: this.promptCount,
-        //         color: color,
-        //     }
-        // });
-        
     }
 }

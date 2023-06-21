@@ -1,5 +1,6 @@
 import { config } from './../config.js';
-import browser from "webextension-polyfill";
+// import browser from "webextension-polyfill";
+import browser from "./../browser-polyfill.min.js";
 //import * as browser from './webextension-polyfill.js';
 
 export default class ConfigHandler {
@@ -19,7 +20,7 @@ export default class ConfigHandler {
   static async create() {
     const handler = new ConfigHandler();
     await handler.getSettings();
-    console.log(`==> ${this.manifest.name}: Config handler`, handler)
+    console.log(`==> ${this.manifest}: Config handler`, handler)
     return handler;
   }
   static getManifestData(){
