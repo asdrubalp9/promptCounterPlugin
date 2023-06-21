@@ -8,16 +8,17 @@ export default class PromptCounter {
 
     /*
     TODO: revisar si se resetea el counting despues de 3 horas
-    revisar como tomar el primer prompt nuevo y ver si es gpt3 o gpt4 
-    que haga el ding cuando termine de responder
+    Eliminar los gpt3
     verificar que el tiempo se tome bien
     /*/
     constructor() {
         this.modelosGpt4 = [
-            "Model: Web Browsing",
-            "Model: GPT-4",
-            "Model: Plugins",
-            "GPT"
+            "model: web browsing",
+            "model: gpt-4",
+            "model: plugins",
+            "gpt-4",
+            "gpt",
+            "davinci", // este es para gpt-3
         ]
         this.configHandler = null
         this.fechaUltimoPrompt = null
@@ -33,7 +34,7 @@ export default class PromptCounter {
     }
 
     validateIfGPTVersionIsCountable(html){
-        if(this.modelosGpt4.some(modelo => html.includes(modelo))){
+        if(this.modelosGpt4.some(modelo => html.toLowerCase().includes(modelo.toLowerCase()))){
             return true
         }
         return false
@@ -47,22 +48,25 @@ export default class PromptCounter {
             //buscar si tiene boton, si tiene boton ver cual esta seleccionado
             // si no tiene boton usar el actual
             if ((tagName === 'input' || tagName === 'textarea') && e.key === 'Enter' && !e.shiftKey) {
+                let countPrompt = false
                 if(block){
-                    console.log("🚀 ~ setPromptCounterListeners ~ block", block, block.outerHTML.includes('GPT-4'), this.validateIfGPTVersionIsCountable(block.outerHTML))
-                    if(block.outerHTML.includes('button')){
-    
-                    }else{
-                        if (this.validateIfGPTVersionIsCountable(block.outerHTML)) {
-                        //if (block.outerHTML.includes('GPT-4') && block.outerHTML.includes('Model')) {
-                            await this.addPromptCount();
-                            this.updateBadge();
-                        }
+                    console.log("🚀 ~ setPromptCounterListeners ~ block", block, block.outerHTML.includes('GPT-4'), this.validateIfGPTVersionIsCountable(block.outerHTML), window.location.href, this.validateIfGPTVersionIsCountable(window.location.href))
+                    if (this.validateIfGPTVersionIsCountable(window.location.href)) {
+                        countPrompt = true
+                    }
+                    if (this.validateIfGPTVersionIsCountable(block.outerHTML)) {
+                        countPrompt = true
+                    }
+                    if(countPrompt){
+                        await this.addPromptCount();
+                        this.updateBadge();
                     }
                 }
             }
         });
 
         delegateEventListener('FORM button.absolute:last-child', 'click', async () => {
+            console.log('--------------->>>>FORM button.absolute:last-child')
             await this.addPromptCount();
         });
     }
@@ -118,6 +122,9 @@ export default class PromptCounter {
             this.configHandler = null
             this.fechaUltimoPrompt = null
             this.promptCount = 0
+            const sendBtn = document.querySelector('FORM button.absolute:last-child');
+            sendBtn.removeEventListener("click", () => {});
+            document.removeEventListener("keydown", () => {});
             setTimeout(() => {
                 resolve()
             }, 300)
