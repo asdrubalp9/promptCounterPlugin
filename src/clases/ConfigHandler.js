@@ -6,9 +6,10 @@ export default class ConfigHandler {
   constructor() {
     this.settings = {};
 
+    this.manifest = ConfigHandler.getManifestData()
     browser.storage.onChanged.addListener((changes, areaName) => {
-      const manifest = ConfigHandler.getManifestData()
-      console.log(`==> ${manifest.name}: Config handler, areaName: ${areaName} changes -->`, changes, ConfigHandler.getManifestData())
+      
+      console.log(`==> ${this.anifest.name}: Config handler, areaName: ${areaName} changes -->`, changes)
         if (areaName === 'sync') {
             this.updateSettings(changes);
         }
@@ -18,7 +19,7 @@ export default class ConfigHandler {
   static async create() {
     const handler = new ConfigHandler();
     await handler.getSettings();
-    console.log(`==> handler`, handler )
+    console.log(`==> ${this.anifest.name}: Config handler`, handler)
     return handler;
   }
   static getManifestData(){
@@ -27,7 +28,6 @@ export default class ConfigHandler {
   }
   static displayVersion() {
     let manifestData = browser.runtime.getManifest();
-    console.log("🚀 ~ ConfigHandler.js:26 manifestData.version:", manifestData.version)
     return manifestData.version;
   }
 

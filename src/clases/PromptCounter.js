@@ -7,7 +7,9 @@ import browser from "webextension-polyfill";
 export default class PromptCounter {
 
     /*
-    hay un error, el tiempo debe contarlo a partir del primer prompt y no resetear el tiempo despues de que hayan pasado 3 horas.
+    TODO: revisar si se resetea el counting despues de 3 horas
+    revisar como tomar el primer prompt nuevo y ver si es gpt3 o gpt4 
+    que haga el ding cuando termine de responder
     /*/
   constructor() {
     this.modelosGpt4 = [
