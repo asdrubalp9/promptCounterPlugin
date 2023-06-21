@@ -21,7 +21,7 @@ export default class SoundActivator {
   }
 
   async destroy() {
-    return new Promise ((resolve, reject) => {
+    return new Promise ((resolve) => {
       document.removeEventListener("eventStartTalking", () => {});
       this.configHandler = null
       this.elementMonitor = null
