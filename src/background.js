@@ -1,4 +1,5 @@
 // Para soportar tanto Google Chrome como Mozilla Firefox
+import ReviewReminder from './clases/ReviewReminder.js';
 const extension = typeof browser !== 'undefined' ? browser : chrome;
 
 extension.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -46,3 +47,9 @@ extension.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
+
+(async function() {
+  const reviewUrl = 'https://chrome.google.com/webstore/detail/gpt4-promptcounter/hllmajaolaombcgdgdfodckdmhaphbli';
+  const reviewReminder = new ReviewReminder(reviewUrl);
+  await reviewReminder.initReminder();
+})();

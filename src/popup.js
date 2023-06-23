@@ -1,6 +1,7 @@
 import FormGenerator from './clases/formGenerator.js';
 import { config } from './config.js';
 import ConfigHandler from './clases/ConfigHandler.js'
+import ReviewReminder from './clases/ReviewReminder.js';
 
 const configHandler = ConfigHandler
 

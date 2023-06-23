@@ -8,7 +8,8 @@ export default class PromptCounter {
 
     /*
     TODO: revisar si se resetea el counting despues de 3 horas
-    Eliminar los gpt3
+    no esta contando bien los prompts despues de ir de una pagina a otra
+    hacer que vigile los botones con el contenido: regenerate response, continue generating y contarlos
     verificar que el tiempo se tome bien
     /*/
     constructor() {
@@ -93,6 +94,7 @@ export default class PromptCounter {
         }
         if(this.promptCount < this.maxPromptCount){
             this.promptCount++;
+            console.log("🚀 ~ Adding to count:", this.promptCount)
             await this.setCountingSettings();
             this.updateBadge();
         }

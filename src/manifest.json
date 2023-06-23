@@ -1,9 +1,11 @@
 {
   "manifest_version": 3,
   "name": "GPT4 PromptCounter",
-  "version": "1.01",
+  "version": "1.02",
   "description": "Count the times you've used a prompt in GPT4",
   "permissions": [
+    "alarms",
+    "notifications",
     "storage",
     "tabs",
     "audio"
