@@ -4,7 +4,7 @@ import SoundActivator from './clases/SoundActivator.js';
 import { HTMLInjector, delegateEventListener } from './helpers.js';
 
 
-const plugin = new DrusPlugins();
+//const plugin = new DrusPlugins();
 const counter = new PromptCounter();
 const dingus = new SoundActivator();
 
