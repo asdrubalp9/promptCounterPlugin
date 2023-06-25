@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GPT4 PromptCounter",
   "version": "1.03",
-  "description": "Count the times you've used a prompt in GPT4",
+  "description": "Count the times you've used a prompt in GPT4 and be notified when ChatGPT response is ready",
   "permissions": [
     "alarms",
     "notifications",

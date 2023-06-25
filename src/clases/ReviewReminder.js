@@ -11,7 +11,6 @@ export default class ReviewReminder {
     }
 
     async initReminder() {
-        this.sendNotification();
         this.configHandler = await ConfigHandler.create();
 
         if (!await this.configHandler.getItem(this.installationDateKey)) {
