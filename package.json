@@ -4,13 +4,15 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
+    "prebuild": "node prebuild.js",
+    "build:chrome": "npm run prebuild chrome && webpack --mode=production --env=isZipable --env=browser=chrome",
+    "build:firefox": "npm run prebuild firefox && webpack --mode=production --env=isZipable --env=browser=firefox",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch --mode=production",
+    "watch:chrome": "npm run prebuild chrome && webpack --watch --mode=production",
+    "watch:firefox": "npm run prebuild firefox && webpack --watch --mode=production",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "build": "webpack --mode=production --env=isZipable",
-    "dev:vite": "vite build --mode production --watch",
-    "build:vite": "vite build --mode production"
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -28,14 +30,12 @@
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.9",
-    "vite": "^4.3.9",
     "webextension-polyfill": "^0.10.0",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",
     "zip-webpack-plugin": "^4.0.1"
   },
   "dependencies": {
-    "vite-plugin-static-copy": "^0.16.0",
     "webpack-build-notifier": "^2.3.0"
   }
 }

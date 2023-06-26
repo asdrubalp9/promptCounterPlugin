@@ -7,6 +7,8 @@ const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 
 module.exports = (env, argv) => {
+  const browser = argv.env.browser || 'unknown';
+
   const isZipable = argv?.env?.isZipable || false;
   const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'src', 'manifest.json'), 'utf8'));
   // Obtener el nombre y reemplazar espacios por underscores
@@ -52,13 +54,12 @@ module.exports = (env, argv) => {
         suppressSuccess: false,
       }),
       ...(isZipable ? [new ZipPlugin({
-          filename: `${name}_${formattedDate}.zip`,
+          filename: `${name}_${browser}_${formattedDate}.zip`,
           compression: 'DEFLATE',
           path: '../dist-zip',
         })] : []),
       new CopyWebpackPlugin({
         patterns: [
-          { from: path.join(__dirname, 'src', 'manifest.json'), to: path.join(__dirname, 'dist', 'manifest.json') },
           { from: path.join(__dirname, 'src', 'helpers.js'), to: path.join(__dirname, 'dist', 'helpers.js') },
           { from: path.join(__dirname, 'src', 'images'), to: path.join(__dirname, 'dist', 'images') },
           { from: path.join(__dirname, 'src', 'clases'), to: path.join(__dirname, 'dist', 'clases') },

@@ -7,17 +7,13 @@ import browser from "webextension-polyfill";
 export default class PromptCounter {
 
     /*
-    TODO: revisar si se resetea el counting despues de 3 horas
-    no esta contando bien los prompts despues de ir de una pagina a otra
+    TODO:
     hacer que vigile los botones con el contenido: regenerate response, continue generating y contarlos
-    verificar que el tiempo se tome bien
     /*/
     constructor() {
-        this.modelosGpt4 = [
-            "model: web browsing",
-            "model: gpt-4",
-            "model: plugins",
-            "gpt-4"
+        this.notCountableModels = [
+            "gpt-3.5",
+            "gpt-3",
         ]
         this.configHandler = null
         this.fechaUltimoPrompt = null
@@ -32,41 +28,39 @@ export default class PromptCounter {
         this.setPromptCounterListeners();
     }
 
-    validateIfGPTVersionIsCountable(html){
-        if(this.modelosGpt4.some(modelo => html.toLowerCase().includes(modelo.toLowerCase()))){
-            return true
+    validateIfGPTVersionIsCountable(){
+        const block = document.querySelector('main > div > div > div > div > div');
+        let countPrompt = true
+        const html = block.outerHTML
+        if(block){
+            if(this.notCountableModels.some(modelo => html.toLowerCase().includes(modelo.toLowerCase()))){
+                countPrompt = false
+            }
         }
-        return false
+        if(this.notCountableModels.some(modelo => window.location.href.toLowerCase().includes(modelo.toLowerCase()))){
+            countPrompt = false
+        }
+        if(countPrompt){
+            this.addPromptCount()
+            .then(() => {
+                this.updateBadge();
+            });
+        }
     }
     
     setPromptCounterListeners() {
         console.log('setPromptCounterListeners')
-        document.addEventListener('keydown', async (e) => {
+        function isEnterBeingPressed(evt){
             const tagName = document.activeElement.tagName.toLowerCase();
-            const block = document.querySelector('main > div > div > div > div > div');
-            //buscar si tiene boton, si tiene boton ver cual esta seleccionado
-            // si no tiene boton usar el actual
-            if ((tagName === 'input' || tagName === 'textarea') && e.key === 'Enter' && !e.shiftKey) {
-                let countPrompt = false
-                if(block){
-                    console.log("🚀 ~ setPromptCounterListeners ~ block", block, block.outerHTML.includes('GPT-4'), this.validateIfGPTVersionIsCountable(block.outerHTML), window.location.href, this.validateIfGPTVersionIsCountable(window.location.href))
-                    if (this.validateIfGPTVersionIsCountable(window.location.href)) {
-                        countPrompt = true
-                    }
-                    if (this.validateIfGPTVersionIsCountable(block.outerHTML)) {
-                        countPrompt = true
-                    }
-                    if(countPrompt){
-                        await this.addPromptCount();
-                        this.updateBadge();
-                    }
-                }
+            if ((tagName === 'input' || tagName === 'textarea') && evt.key === 'Enter' && !evt.shiftKey) {
+                this.validateIfGPTVersionIsCountable()
             }
-        });
+        }
+        document.addEventListener('keydown', (e) => {isEnterBeingPressed(e)});
 
         delegateEventListener('FORM button.absolute:last-child', 'click', async () => {
-            console.log('--------------->>>>FORM button.absolute:last-child')
-            await this.addPromptCount();
+            console.log('button Clicked')
+            this.validateIfGPTVersionIsCountable()
         });
     }
 
@@ -77,7 +71,6 @@ export default class PromptCounter {
             await this.resetPromptCount();
         }
         this.updateBadge();
-        console.log("🚀🚀🚀initializePromptCountingVariables", this.promptCount, this.fechaUltimoPrompt)
     }
 
     checkIfResetIsNeeded (){
@@ -89,15 +82,18 @@ export default class PromptCounter {
     }
 
     async addPromptCount(){
-        if(await this.checkIfResetIsNeeded()){
-            await this.resetPromptCount();
-        }
-        if(this.promptCount < this.maxPromptCount){
-            this.promptCount++;
-            console.log("🚀 ~ Adding to count:", this.promptCount)
-            await this.setCountingSettings();
-            this.updateBadge();
-        }
+        return new Promise(async (resolve, reject) => {
+            if(await this.checkIfResetIsNeeded()){
+                await this.resetPromptCount();
+            }
+            if(this.promptCount < this.maxPromptCount){
+                this.promptCount++;
+                console.log("🚀 ~ Adding to count:", this.promptCount)
+                await this.setCountingSettings();
+                this.updateBadge();
+            }
+            resolve();
+        })
     }
 
     async setCountingSettings() {
