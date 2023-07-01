@@ -14,9 +14,8 @@ counter.init()
   .catch(err => console.error('Failed to initialize PromptCounter:', err));
 
 delegateEventListener('li a', 'click', async function(event) {
-  Promise.all([dingus.destroy(), counter.destroy()]).then(() => {
+  Promise.all([dingus.destroy()]).then(() => {
     console.log('All destroyed.');
-    counter.init()
     dingus.init();
   });
 });

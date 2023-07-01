@@ -1,0 +1,26 @@
+{
+    "configLabel": {
+      "message": "Configuration"
+    },
+    "soundConfigLabel": {
+      "message": "Sound configuration"
+    },
+    "soundConfigPlaceholder": {
+      "message": "Sound configuration"
+    },
+    "alwaysSoundLabel": {
+      "message": "Always sound when chatGPT finishes"
+    },
+    "soundWhenNotFocusedLabel": {
+      "message": "Only sound when chatGPT is not focused"
+    },
+    "neverSoundLabel": {
+      "message": "Never make a sound"
+    },
+    "promptCountLabel": {
+      "message": "Prompt count"
+    },
+    "fechaUltimoPromptLabel": {
+      "message": "Last prompt date"
+    }
+}

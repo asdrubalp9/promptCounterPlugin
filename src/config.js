@@ -1,14 +1,14 @@
-// import { geti18nMessage } from "./helpers";
+import { geti18nMessage } from "./helpers";
 
 const config = [
   {
     type: 'separator',
-    label: 'Configuration',
+    label: geti18nMessage('configLabel'),
   },
   {
     name: 'sound',
-    label: 'Sound configuration',
-    placeholder: 'Sound configuration',
+    label: geti18nMessage('soundConfigLabel'),
+    placeholder: geti18nMessage('soundConfigPlaceholder'),
     htmlId: 'sound',
     htmlclass: '',
     value: '',
@@ -17,22 +17,22 @@ const config = [
     Hint: '',
     options: [
       {
-        label: 'Always sound when chatGPT finishes',
+        label: geti18nMessage('alwaysSoundLabel'),
         value: 'always', 
       },
       {
-        label: 'Only sound when chatGPT is not focused',
+        label: geti18nMessage('soundWhenNotFocusedLabel'),
         value: 'notFocused',
       },
       {
-        label: 'Never make a sound',
+        label: geti18nMessage('neverSoundLabel'),
         value: 'never',
       },
     ],
   },
   {
     name: 'promptCount',
-    label: 'promptCount',
+    label: geti18nMessage('promptCountLabel'),
     htmlId: 'promptCount',
     value: 0,
     defaultValue: 0,
@@ -40,7 +40,7 @@ const config = [
   },
   {
     name: 'fechaUltimoPrompt',
-    label: 'fechaUltimoPrompt',
+    label: geti18nMessage('fechaUltimoPromptLabel'),
     htmlId: 'fechaUltimoPrompt',
     value: 0,
     defaultValue: 0,

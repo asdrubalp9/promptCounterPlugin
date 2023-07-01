@@ -26,6 +26,32 @@ export function waitForElement(cssSelector) {
   });
 }
 
+export function delegateEventListenerByText(elementInfo, eventType, eventHandler) {
+  /*
+  elementInfo = {
+    innerText: '',
+    tagName: '',
+    className: '',
+  }
+  // */
+  // agregar el evento al document (elemento padre)
+  document.addEventListener(eventType, function(event) {
+      // obtener el elemento al que se hizo clic
+      var targetElement = event.target;
+      // recorrer la cadena de ancestros del elemento hasta encontrar un elemento que coincida con el texto
+      while (targetElement != null) {
+          if (
+              targetElement.textContent.trim().toLowerCase() === elementInfo.innerText &&
+              targetElement.tagName.toLowerCase() === elementInfo.tagName.toLowerCase() &&
+              targetElement.className.toLowerCase() === elementInfo.className.toLowerCase()
+            ) {
+              eventHandler.call(targetElement, event);
+              break;
+          }
+          targetElement = targetElement.parentElement;
+      }
+  }, false);
+}
 
 export function delegateEventListener(selector, eventType, eventHandler) {
       // agregar el evento al document (elemento padre)

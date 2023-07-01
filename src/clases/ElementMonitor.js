@@ -25,9 +25,7 @@ export default class ElementMonitor {
 
   startMonitoring(element) {
     const config = { attributes: true, childList: true, subtree: true };
-    console.log('start monitoring')
     const callback = (mutationsList, observer) => {
-      console.log('start monitoring')
       // /(Stop generating)/i
       if (this.condicionInicial.test(this.trackedElement.outerHTML)) {
         this.observer.disconnect();

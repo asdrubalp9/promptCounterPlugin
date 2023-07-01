@@ -70,7 +70,7 @@ module.exports = (env, argv) => {
           // { from: path.join(__dirname, 'src', 'background.js'), to: path.join(__dirname, 'dist', 'background.js') },
           { from: path.join(__dirname, 'src', 'browser-polyfill.min.js'), to: path.join(__dirname, 'dist', 'browser-polyfill.min.js') },
           { from: path.join(__dirname, 'src', 'sounds'), to: path.join(__dirname, 'dist', 'sounds') },
-          // { from: path.join(__dirname, 'src', '_locales'), to: path.join(__dirname, 'dist', '_locales') },
+          { from: path.join(__dirname, 'src', '_locales'), to: path.join(__dirname, 'dist', '_locales') },
         ],
       }),
     ],

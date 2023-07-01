@@ -1,5 +1,5 @@
 import ConfigHandler from './ConfigHandler.js';
-import { delegateEventListener, waitForElement } from './../helpers.js';
+import { delegateEventListener, delegateEventListenerByText, waitForElement } from './../helpers.js';
 import browser from "webextension-polyfill";
 //import * as browser from './webextension-polyfill.js';
 
@@ -30,6 +30,7 @@ export default class PromptCounter {
 
     validateIfGPTVersionIsCountable(){
         const block = document.querySelector('main > div > div > div > div > div');
+        console.log("validateIfGPTVersionIsCountable block:", block)
         let countPrompt = true
         const html = block.outerHTML
         if(block){
@@ -40,6 +41,8 @@ export default class PromptCounter {
         if(this.notCountableModels.some(modelo => window.location.href.toLowerCase().includes(modelo.toLowerCase()))){
             countPrompt = false
         }
+        console.log("🚀 ~ countPrompt:", countPrompt? 'yes': 'no')
+        //if(true){
         if(countPrompt){
             this.addPromptCount()
             .then(() => {
@@ -50,14 +53,43 @@ export default class PromptCounter {
     
     setPromptCounterListeners() {
         console.log('setPromptCounterListeners')
-        function isEnterBeingPressed(evt){
+        
+        document.addEventListener('keydown', (evt) => {
             const tagName = document.activeElement.tagName.toLowerCase();
             if ((tagName === 'input' || tagName === 'textarea') && evt.key === 'Enter' && !evt.shiftKey) {
+                console.log('pressed right')
                 this.validateIfGPTVersionIsCountable()
             }
+        });
+        
+        const saveAndSubmitBtn = {
+            innerText: "Save & Submit",
+            tagName: 'button',
+            className: 'flex w-full gap-2 items-center jutify-center',
         }
-        document.addEventListener('keydown', (e) => {isEnterBeingPressed(e)});
-
+        delegateEventListenerByText(saveAndSubmitBtn, "click", async () => {
+            console.log(saveAndSubmitBtn.innerText, this);
+            this.validateIfGPTVersionIsCountable()
+        });
+        const continueGeneratingBtn = {
+            innerText: "Continue generating",
+            tagName: 'button',
+            className: 'flex w-full gap-2 items-center jutify-center',
+        }
+        delegateEventListenerByText(continueGeneratingBtn, "click", async () => {
+            console.log(continueGeneratingBtn.innerText, this);
+            this.validateIfGPTVersionIsCountable()
+        });
+        const regenerateResponseBtn = {
+            innerText: "Regenerate response",
+            tagName: 'button',
+            className: 'flex w-full gap-2 items-center jutify-center',
+        }
+        delegateEventListenerByText(regenerateResponseBtn, "click", async () => {
+            console.log(regenerateResponseBtn.innerText, this);
+            this.validateIfGPTVersionIsCountable()
+        });
+        // */
         delegateEventListener('FORM button.absolute:last-child', 'click', async () => {
             console.log('button Clicked')
             this.validateIfGPTVersionIsCountable()
