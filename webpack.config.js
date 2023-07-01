@@ -10,11 +10,9 @@ module.exports = (env, argv) => {
   const browser = argv.env.browser || 'unknown';
 
   const isZipable = argv?.env?.isZipable || false;
-  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'src', 'manifest.json'), 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'dist', 'manifest.json'), 'utf8'));
   // Obtener el nombre y reemplazar espacios por underscores
   const name = manifest.name.replace(/\s/g, '_');
-  const date = new Date();
-  const formattedDate = `${date.getFullYear()}${(date.getMonth()+1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
   return {
     entry: {
       content: path.join(__dirname, 'src', 'content.js'),
@@ -50,14 +48,9 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new WebpackBuildNotifierPlugin({
-        title: "TTS PLUGIN",
+        title: name,
         suppressSuccess: false,
       }),
-      ...(isZipable ? [new ZipPlugin({
-          filename: `${name}_${browser}_${formattedDate}.zip`,
-          compression: 'DEFLATE',
-          path: '../dist-zip',
-        })] : []),
       new CopyWebpackPlugin({
         patterns: [
           { from: path.join(__dirname, 'src', 'helpers.js'), to: path.join(__dirname, 'dist', 'helpers.js') },
@@ -66,6 +59,7 @@ module.exports = (env, argv) => {
           { from: path.join(__dirname, 'src', 'options.html'), to: path.join(__dirname, 'dist', 'options.html') },
           { from: path.join(__dirname, 'src', 'options.js'), to: path.join(__dirname, 'dist', 'options.js') },
           { from: path.join(__dirname, 'src', 'popup.html'), to: path.join(__dirname, 'dist', 'popup.html') },
+          { from: path.join(__dirname, 'dist', 'manifest.json'), to: path.join(__dirname, 'dist', 'manifest.json') },
           // { from: path.join(__dirname, 'src', 'popup.js'), to: path.join(__dirname, 'dist', 'popup.js') },
           // { from: path.join(__dirname, 'src', 'background.js'), to: path.join(__dirname, 'dist', 'background.js') },
           { from: path.join(__dirname, 'src', 'browser-polyfill.min.js'), to: path.join(__dirname, 'dist', 'browser-polyfill.min.js') },
@@ -73,6 +67,11 @@ module.exports = (env, argv) => {
           { from: path.join(__dirname, 'src', '_locales'), to: path.join(__dirname, 'dist', '_locales') },
         ],
       }),
+      ...(isZipable ? [new ZipPlugin({
+        filename: `${name}_${browser}.zip`,
+        compression: 'DEFLATE',
+        path: '../dist-zip',
+      })] : []),
     ],
   };
 }

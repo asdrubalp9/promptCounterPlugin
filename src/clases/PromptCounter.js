@@ -15,6 +15,9 @@ export default class PromptCounter {
             "gpt-3.5",
             "gpt-3",
         ]
+        this.countableModels = [
+            "gpt-4",
+        ]
         this.configHandler = null
         this.fechaUltimoPrompt = null
         this.promptCount = 0
@@ -38,8 +41,8 @@ export default class PromptCounter {
                 countPrompt = false
             }
         }
-        if(this.notCountableModels.some(modelo => window.location.href.toLowerCase().includes(modelo.toLowerCase()))){
-            countPrompt = false
+        if(this.countableModels.some(modelo => window.location.href.toLowerCase().includes(modelo.toLowerCase()))){
+            countPrompt = true
         }
         console.log("🚀 ~ countPrompt:", countPrompt? 'yes': 'no')
         //if(true){

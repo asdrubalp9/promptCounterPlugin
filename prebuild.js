@@ -7,4 +7,4 @@ const browser = process.argv[2] || 'chrome';
 const manifestFile = `manifest.${browser}.json`;
 
 // Copiar el archivo de manifiesto seleccionado a manifest.json
-fs.copyFileSync(path.join(__dirname, 'src', manifestFile), path.join(__dirname, 'src', 'manifest.json'));
+fs.copyFileSync(path.join(__dirname, 'src', manifestFile), path.join(__dirname, 'dist', 'manifest.json'));

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GPT4 PromptCounter",
-  "version": "1.04",
+  "version": "1.05",
   "description": "Count the times you've used a prompt in GPT4 and be notified when ChatGPT response is ready",
   "permissions": [
     "alarms",
