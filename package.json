@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "prebuild": "node prebuild.js",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "build:chrome": "npm run prebuild chrome && webpack --mode=production --env=isZipable --env=browser=chrome",
     "build:firefox": "npm run prebuild firefox && webpack --mode=production --env=isZipable --env=browser=firefox",
     "test": "echo \"Error: no test specified\" && exit 1",
